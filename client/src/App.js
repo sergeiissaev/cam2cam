@@ -16,8 +16,11 @@ class App extends Component {
 
 
     return (
-      <div className="App">
+      <div >
       <h1>Hi Yuyan!</h1>
+      <h2>Want to get <b>Popeyes?</b></h2>
+      <button onClick={()=> alert('Yay! I just received the notification, and will be outside in 5 minutes!')} type="button">Yes! Let's Go!</button> 
+      <button onClick={()=> alert('I know.')} type="button">I'm a butt :(</button> 
       </div>
     );
   }
