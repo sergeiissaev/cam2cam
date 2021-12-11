@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+const port = process.env.PORT || 5000;
 
 class App extends Component {
   // Initialize state
@@ -14,7 +15,7 @@ class App extends Component {
 
   render() {
     const io = require("socket.io-client");     
-    var socket = io.connect(); 
+    const socket = io.connect('http://localhost:'+port)
     console.log(socket)
 
     return (
