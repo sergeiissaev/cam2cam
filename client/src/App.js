@@ -13,7 +13,9 @@ class App extends Component {
 
 
   render() {
-
+    const io = require("socket.io-client");     
+    var socket = io.connect(); 
+    console.log(socket)
 
     return (
       <div >
