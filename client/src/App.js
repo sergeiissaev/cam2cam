@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 const port = process.env.PORT || 5000;
+console.log(port)
 
 class App extends Component {
   // Initialize state
