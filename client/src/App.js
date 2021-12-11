@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 const port = process.env.PORT || 5000;
 console.log(port)
+var host = location.origin;
+console.log(host)
 
 class App extends Component {
   // Initialize state
@@ -16,7 +18,7 @@ class App extends Component {
 
   render() {
     const io = require("socket.io-client");     
-    const socket = io.connect('http://localhost:'+port)
+    const socket = io.connect(host, {port: port, transports: ["websocket"]});
     console.log(socket)
 
     return (
