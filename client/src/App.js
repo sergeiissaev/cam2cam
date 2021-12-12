@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { createRef,  Component } from 'react';
 import './App.css';
 const port = process.env.PORT || 5000;
 console.log(port)
@@ -6,8 +6,21 @@ var host = location.origin;
 console.log(host)
 
 class App extends Component {
+  constructor(props) {
+    super(props);
   // Initialize state
-  state = { me: "placeholder" }
+  this.state = { me: "placeholder",
+  receivingCall: false,
+  caller: "",
+  name: "",
+  callerSignal: "",
+  stream: "",
+ }
+ this.myVideo = createRef()
+ this.myVideo.current = [];
+  }
+
+
 
   // Fetch passwords after first mount
   componentDidMount() {
@@ -15,12 +28,29 @@ class App extends Component {
     const socket = io.connect(host, {port: port, transports: ["websocket"]});
 
 
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+      this.setState({stream: stream})
+        this.myVideo.current.srcObject = stream
+        console.log('Requesting media ... stream set to ', stream)
+    })
+
+
     socket.on("me", (id) => {
-			this.setState({me: id})
-			console.log('setting variable me to')
-			console.log(this.state.me)
-		})
+      this.setState({me: id})
+      console.log('setting variable me to')
+      console.log(this.state.me)
+    })
+
+
+    socket.on("callUser", (data) => {
+      this.setState({receivingCall: true, caller: data.from, name: data.name, callerSignal: data.signal})
+    })
+
+
   }
+
+  
+
 
 
 
