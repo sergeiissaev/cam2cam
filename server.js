@@ -29,7 +29,7 @@ io.on("connection", (socket) => {
 
 	socket.on("answerCall", (data) => {
 		io.to(data.to).emit("callAccepted", data.signal)
-		console.log("sending signal", data.signal, "to", data.to, "as callAccepted")
+		console.log("server answerCall, sending signal to", data.to, "as callAccepted")
 	})
 	
 })
