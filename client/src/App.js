@@ -9,6 +9,8 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import IconButton from "@material-ui/core/IconButton";
 import PhoneIcon from "@material-ui/icons/Phone";
 import Peer from "simple-peer";
+import ReactModal from 'react-modal';
+import Form from 'react-bootstrap/Form';
 
 const io = require("socket.io-client");   
 
@@ -34,6 +36,10 @@ class App extends Component {
   callAccepted: false,
   callerName: "unknown caller",
   idToCall: "",
+  showModal: true,
+  gender: "male",
+  location: "18",
+  age: "United States",
  }
  this.myVideo = createRef()
  this.myVideo.current = [];
@@ -47,6 +53,8 @@ class App extends Component {
  this.callUser = this.callUser.bind(this);
  this.answerCall = this.answerCall.bind(this);
  this.leaveCall = this.leaveCall.bind(this);
+ this.handleOpenModal = this.handleOpenModal.bind(this);
+ this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
 
@@ -81,6 +89,14 @@ class App extends Component {
   }
 
 
+
+  handleOpenModal () {
+    this.setState({ showModal: true });
+  }
+  
+  handleCloseModal () {
+    this.setState({ showModal: false });
+  }
 
 
 
@@ -158,6 +174,61 @@ class App extends Component {
 
     return (
       <div >
+
+<ReactModal 
+           isOpen={this.state.showModal}
+           contentLabel="Input Age and Location"
+           onRequestClose={this.handleCloseModal}
+        >
+          <p>Enter Gender Age and Country</p>
+          <Form>
+          <Row>
+          <Form.Group as={Col} controlId="formGridState">
+          <Form.Label>Gender </Form.Label>
+          <Form.Select aria-label="Default select example"  onChange={(e) => {this.setState({gender: e.target.value})}}>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </Form.Select>
+        </Form.Group>
+
+        <Form.Group as={Col} controlId="formGridStatea">
+        <Form.Label>Age </Form.Label>
+        <Form.Select aria-label="Default select example"  onChange={(e) => {this.setState({age: e.target.value})}}>
+          <option value="<12">&#60;12</option>
+          <option value="12-18">12-18</option>
+          <option value="18-64">18-64</option>
+          <option value="64+">&#62;64</option>
+        </Form.Select>
+
+        </Form.Group>
+                <Form.Group as={Col} controlId="formGridState">
+      <Form.Label>Country</Form.Label>
+      <Form.Select defaultValue="Choose..." onChange={(e) => {this.setState({country: e.target.value})}}>
+      <option value="Canada">Canada</option>
+      <option value="Other">Other</option>
+      </Form.Select>
+    </Form.Group>
+
+
+        </Row>
+        
+        </Form>
+
+
+
+
+
+        <br /><br /><br /><br /><br />
+
+        
+        <p>{this.state.gender} {this.state.location} {this.state.age}</p>
+          <button onClick={this.handleCloseModal}>Submit</button>
+        </ReactModal>
+
+
+
+
 <h1 style={{ textAlign: "center", color: '#fff' }}>Zoomish - ID: {this.state.me}</h1>
 <Container>
 					<div>
