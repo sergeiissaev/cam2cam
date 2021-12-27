@@ -32,14 +32,17 @@ class App extends Component {
   caller: "",
   name: "",
   callerSignal: "",
+  callerAge: "",
+  callerLocation: "",
+  callerGender: "",
   stream: "",
   callAccepted: false,
   callerName: "unknown caller",
   idToCall: "",
   showModal: true,
   gender: "male",
-  location: "18",
-  age: "United States",
+  location: "Canada",
+  age: "18-64",
  }
  this.myVideo = createRef()
  this.myVideo.current = [];
@@ -81,8 +84,8 @@ class App extends Component {
 
 
     this.socket.on("callUser", (data) => {
-      this.setState({receivingCall: true, caller: data.from, callerName: data.name, callerSignal: data.signal})
-      console.log('sockets callUser is triggered: ' + this.state.name + " is receiving a call from ", this.state.callerName, "(", this.state.caller, ") with signal")
+      this.setState({receivingCall: true, caller: data.from, callerName: data.name, callerSignal: data.signal, callerAge: data.age, callerLocation: data.location, callerGender: data.gender})
+      console.log('sockets callUser is triggered: ' + this.state.name + " is receiving a call from ", this.state.callerName, "(", this.state.caller, ") with signal and gender ", this.state.callerGender)
     })
 
 
@@ -112,7 +115,10 @@ class App extends Component {
         userToCall: id,
         signalData: data,
         from: this.state.me,
-        name: this.state.name
+        name: this.state.name,
+        gender: this.state.gender,
+        location: this.state.location,
+        age: this.state.age,
       })
     })
     peer.on("stream", (stream) => {
@@ -180,7 +186,7 @@ class App extends Component {
            contentLabel="Input Age and Location"
            onRequestClose={this.handleCloseModal}
         >
-          <p>Enter Gender Age and Country</p>
+          <p>Enter your information to log in</p>
           <Form>
           <Row>
           <Form.Group as={Col} controlId="formGridState">
@@ -194,7 +200,7 @@ class App extends Component {
 
         <Form.Group as={Col} controlId="formGridStatea">
         <Form.Label>Age </Form.Label>
-        <Form.Select aria-label="Default select example"  onChange={(e) => {this.setState({age: e.target.value})}}>
+        <Form.Select aria-label="Default select example" defaultValue={this.state.age} onChange={(e) => {this.setState({age: e.target.value})}}>
           <option value="<12">&#60;12</option>
           <option value="12-18">12-18</option>
           <option value="18-64">18-64</option>
@@ -204,9 +210,9 @@ class App extends Component {
         </Form.Group>
                 <Form.Group as={Col} controlId="formGridState">
       <Form.Label>Country</Form.Label>
-      <Form.Select defaultValue="Choose..." onChange={(e) => {this.setState({country: e.target.value})}}>
+      <Form.Select defaultValue={this.state.location} onChange={(e) => {this.setState({location: e.target.value})}}>
       <option value="Canada">Canada</option>
-      <option value="Other">Other</option>
+      <option value="other">Other</option>
       </Form.Select>
     </Form.Group>
 
@@ -222,19 +228,26 @@ class App extends Component {
         <br /><br /><br /><br /><br />
 
         
-        <p>{this.state.gender} {this.state.location} {this.state.age}</p>
+        
+        <Row>
+          <Col></Col>
+          <Col>
+          <p>{this.state.gender} {this.state.age} {this.state.location} </p>
           <button onClick={this.handleCloseModal}>Submit</button>
+          </Col>
+          <Col></Col>
+          </Row>
         </ReactModal>
 
 
 
 
-<h1 style={{ textAlign: "center", color: '#fff' }}>Zoomish - ID: {this.state.me}</h1>
+<h1 style={{ textAlign: "center", color: '#fff' }}>Random Chat Site</h1>
 <Container>
 					<div>
           {this.state.receivingCall && !this.state.callAccepted ? (
 						<div className="caller">
-						<h1 >{this.state.callerName} is calling...</h1>
+						<h1 >{this.state.callerName}  ({this.state.callerAge} year old {this.state.callerGender} from {this.state.callerLocation}) is calling...</h1>
 						<Button variant="contained" color="primary" onClick={this.answerCall}>
 							Answer
 						</Button>
@@ -251,7 +264,14 @@ class App extends Component {
 
             <Container fluid>
 				<Row>
-        <Col xs={1}></Col>
+        <Col xs={1} style={{color: "white"}}>
+            <h3><u>Your info</u></h3>
+            <h6>Gender: {this.state.gender}</h6>
+            <h6>Age: {this.state.age}</h6>
+            <h6>Location: {this.state.location}</h6>
+
+
+        </Col>
         
 				<Col xs={10} >
 

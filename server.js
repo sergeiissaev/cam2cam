@@ -22,7 +22,7 @@ io.on("connection", (socket) => {
 	
 
 	socket.on("callUser", (data) => {
-		io.to(data.userToCall).emit("callUser", { signal: data.signalData, from: data.from, name: data.name })
+		io.to(data.userToCall).emit("callUser", { signal: data.signalData, from: data.from, name: data.name, gender: data.gender, age: data.age, location: data.location })
 		console.log(socket.id + " is calling", data.userToCall, "and emitting callUser")
 	})
 	
