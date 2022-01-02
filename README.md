@@ -1,5 +1,5 @@
-git add –all
-git commit -m “asl”
+git add --all
+git commit -m "random chat"
 git push -u origin master
 git push heroku master
 

@@ -339,86 +339,17 @@ class App extends Component {
               <h6>Gender: {this.state.callerGender}</h6>
               <h6>Age: {this.state.callerAge}</h6>
               <h6>Location: {this.state.callerLocation}</h6>
-            </Col>
+              <br />
+              <h6>Current Users: 100000</h6>
 
-            <Col xs={10}>
-              {this.state.stream && (
-                <video
-                  className="img-hor-vert"
-                  playsInline
-                  muted
-                  ref={this.myVideo}
-                  autoPlay
-                  style={{
-                    width: "300px",
-                    left: "15%",
-                    marginTop: "25px",
-                    position: "absolute",
-                  }}
-                />
-              )}
 
-              {this.state.callAccepted && !this.state.callEnded ? (
-                <div>
-                  {/* <video playsInline ref={this.userVideo} autoPlay style={{width: '90%', paddingLeft: '10%'}}  /> */}
-                  <h1>playing video</h1>
-                  <video
-                    playsInline
-                    ref={this.userVideo}
-                    autoPlay
-                    style={{ width: "90%", paddingLeft: "10%" }}
-                  />
-                  <h1>playing vid333eo</h1>
-                </div>
-              ) : (
-                <ReactPlayer
-                  playing={true}
-                  loop={true}
-                  url="videos/loading_circle_bars.mp4"
-                  width="100%"
-                  height="90%"
-                  controls={true}
-                />
-              )}
-            </Col>
-            <Col xs={1}></Col>
-          </Row>
-        </Container>
 
-        <Container fluid style={{ bottom: 0, position: "fixed" }}>
-          <Row style={{ backgroundColor: "yellow" }}>
-            <Col xs={3}>
-              <TextField
-                id="filled-basic"
-                label="Name"
-                variant="filled"
-                value={this.state.name}
-                onChange={(e) => this.setState({ name: e.target.value })}
-              />
-            </Col>
-            <Col xs={3}>
-              <CopyToClipboard text={this.state.me}>
-                <Button
-                  variant="contained"
-                  onClick={() =>
-                    console.log("Clicked copy ID with ID", this.state.me)
-                  }
-                  color="primary"
-                  startIcon={<AssignmentIcon fontSize="large" />}
-                >
-                  Copy ID
-                </Button>
-              </CopyToClipboard>
-            </Col>
-            <Col xs={2}>
-              <TextField
-                id="filled-basic"
-                label="ID to call"
-                variant="filled"
-                value={this.state.idToCall}
-                onChange={(e) => this.setState({ idToCall: e.target.value })}
-              />
-            </Col>
+
+
+
+
+
+
             {!this.state.searching && !this.state.callAccepted && (
               <Col xs={1}>
                 <Button
@@ -449,7 +380,7 @@ class App extends Component {
 
             <Col xs={3}>
               <div className="call-button">
-                {this.state.callAccepted && !this.state.callEnded ? (
+                {this.state.callAccepted && !this.state.callEnded && (
                   <Button
                     variant="contained"
                     color="secondary"
@@ -457,19 +388,50 @@ class App extends Component {
                   >
                     End Call
                   </Button>
-                ) : (
-                  <IconButton
-                    color="primary"
-                    aria-label="call"
-                    onClick={() => this.callUser(this.state.idToCall)}
-                  >
-                    <PhoneIcon fontSize="large" />
-                  </IconButton>
                 )}
               </div>
             </Col>
+            </Col>
+
+            <Col xs={10}>
+              {this.state.stream && (
+                <video
+                  className="img-hor-vert"
+                  playsInline
+                  muted
+                  ref={this.myVideo}
+                  autoPlay
+                  style={{
+                    width: "300px",
+                    left: "15%",
+                    marginTop: "25px",
+                    position: "absolute",
+                  }}
+                />
+              )}
+
+              {this.state.callAccepted && !this.state.callEnded && (
+                <div>
+                  <video
+                    playsInline
+                    ref={this.userVideo}
+                    autoPlay
+                    style={{ width: "90%", paddingLeft: "10%" }}
+                  />
+                </div>
+              )}
+            </Col>
+            <Col xs={1}></Col>
           </Row>
         </Container>
+
+
+
+
+
+
+
+
       </div>
     );
   }
