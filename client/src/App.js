@@ -5,6 +5,8 @@ import ReactPlayer from "react-player";
 import TextField from "@material-ui/core/TextField";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Button from "@material-ui/core/Button";
+import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import IconButton from "@material-ui/core/IconButton";
 import PhoneIcon from "@material-ui/icons/Phone";
@@ -65,17 +67,18 @@ class App extends Component {
   }
 
   handleCloseModal() {
+    navigator.mediaDevices
+    .getUserMedia({ video: true, audio: true })
+    .then((stream) => {
+      this.setState({ stream: stream });
+      this.myVideo.current.srcObject = stream;
+      console.log("Requesting media ... stream set to ", stream);
+    });
     this.setState({ showModal: false });
 
     this.socket = io.connect(host, { port: port, transports: ["websocket"] });
 
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((stream) => {
-        this.setState({ stream: stream });
-        this.myVideo.current.srcObject = stream;
-        console.log("Requesting media ... stream set to ", stream);
-      });
+
 
     this.socket.on("me", (id) => {
       this.setState({ me: id });
@@ -301,7 +304,20 @@ class App extends Component {
           </Row>
         </ReactModal>
 
-        <h1 style={{ textAlign: "center", color: "#fff" }}>Random Chat Site</h1>
+
+        <Navbar bg="primary" variant="dark">
+    <Container fluid>
+    <Navbar.Brand href="#home">Cam2Cam Chat App</Navbar.Brand>
+    <Nav className="me-auto">
+      <Nav.Link href="#pricing">Main Room</Nav.Link>
+    </Nav>
+    </Container>
+  </Navbar>
+
+
+
+
+
         <Container>
           <div>
             {this.state.receivingCall && !this.state.callAccepted ? (
@@ -323,77 +339,31 @@ class App extends Component {
           </div>
         </Container>
 
-        <Container fluid>
-          <Row>
-            <Col xs={1} style={{ color: "white" }}>
-              <h3>
-                <u>Your info</u>
-              </h3>
-              <h6>Gender: {this.state.gender}</h6>
-              <h6>Age: {this.state.age}</h6>
-              <h6>Location: {this.state.location}</h6>
-
-              <h3>
-                <u>Chatting with</u>
-              </h3>
-              <h6>Gender: {this.state.callerGender}</h6>
-              <h6>Age: {this.state.callerAge}</h6>
-              <h6>Location: {this.state.callerLocation}</h6>
-              <br />
-              <h6>Current Users: 100000</h6>
+        <Container  fluid style={{backgroundColor: 'yellow', height: "89vh"}}>
+          <Row style={{height: "100%"}}>
 
 
-
-
-
-
-
-
-
-            {!this.state.searching && !this.state.callAccepted && (
-              <Col xs={1}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => this.callRandomUser(this.state.idToCall)}
-                >
-                  Random Chat
-                </Button>
-              </Col>
-            )}
-            {this.state.searching && !this.state.callAccepted && (
-              <Col xs={1}>
-                <h6>Searching</h6>
-              </Col>
-            )}
-            {!this.state.searching && this.state.callAccepted && (
-              <Col xs={1}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => this.callRandomUser(this.state.idToCall)}
-                >
-                  Start New Chat
-                </Button>
-              </Col>
-            )}
-
-            <Col xs={3}>
-              <div className="call-button">
-                {this.state.callAccepted && !this.state.callEnded && (
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={this.leaveCall}
-                  >
-                    End Call
-                  </Button>
-                )}
-              </div>
+              <Col xs={7} style={{backgroundColor: "orange"}}>
+              {this.state.callAccepted && !this.state.callEnded && (
+    
+                  <video
+                   className="img-hor-vert"
+                    playsInline
+                    ref={this.userVideo}
+                    autoPlay
+                    style={{
+                      height: "94%",
+                      objectFit: "cover",
+                      left: "1.0%",
+                      position: "absolute",
+                      marginTop: "1.4%",
+                      maxWidth: "98%",
+                    }}
+                  />
+          
+              )}
             </Col>
-            </Col>
-
-            <Col xs={10}>
+            <Col xs={5} style={{backgroundColor: "teal"}}>
               {this.state.stream && (
                 <video
                   className="img-hor-vert"
@@ -402,28 +372,64 @@ class App extends Component {
                   ref={this.myVideo}
                   autoPlay
                   style={{
-                    width: "300px",
-                    left: "15%",
-                    marginTop: "25px",
+                    width: "98%",
+                    objectFit: "cover",
+                    left: "0.8%",
                     position: "absolute",
+                    minWidth: "90%",
+                    marginTop: "2%",
                   }}
                 />
               )}
+              </Col>
 
-              {this.state.callAccepted && !this.state.callEnded && (
-                <div>
-                  <video
-                    playsInline
-                    ref={this.userVideo}
-                    autoPlay
-                    style={{ width: "90%", paddingLeft: "10%" }}
-                  />
-                </div>
-              )}
+          </Row>
+          <Row  style={{height: '5.5vh', alignItems: "center", alignContent: 'center'}}>
+         
+          <Col xs={7} style={{ backgroundColor: "grey", color: "white", height: "100%", alignContent: "center", alignItems: "center", display: "flex", justifyContent: 'center'}}>
+        
+            {!this.state.searching && !this.state.callAccepted && (
+   
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => this.callRandomUser(this.state.idToCall)}
+                  style={{height: '5vh', width: '20%'}}
+                >
+                  Random Chat
+                </Button>
+         
+            )}
+            {this.state.searching && !this.state.callAccepted && (
+          
+                <h6>Searching</h6>
+      
+            )}
+      
+           
+      
+
+                {this.state.callAccepted && !this.state.callEnded && (
+                       
+                         
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={this.leaveCall}
+                    style={{height: '5vh', width: '20%'}}
+                  >
+                    Next
+                  </Button>
+                          
+       )}
+
             </Col>
-            <Col xs={1}></Col>
+            <Col xs={5}></Col>
+
+
           </Row>
         </Container>
+
 
 
 
