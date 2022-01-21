@@ -358,6 +358,7 @@ class App extends Component {
                       position: "absolute",
                       marginTop: "1.4%",
                       maxWidth: "98%",
+                      width: "98%",
                     }}
                   />
           
