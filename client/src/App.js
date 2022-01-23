@@ -86,6 +86,11 @@ class App extends Component {
       console.log(this.state.me);
     });
 
+    this.socket.on("callEnded", (id) => {
+      this.setState({ callEnded: true });
+      console.log("other user has disconnected");
+    });
+
     this.socket.on("callUser", (data) => {
       this.setState({
         receivingCall: true,
@@ -119,6 +124,9 @@ class App extends Component {
         callerLocation: data.location,
         callerGender: data.gender,
       });
+      this.socket.on("callEnded", (data) => {
+        console.log("Call was ended - socket")
+        });
       console.log(
         "Randomly chatting with a ",
         data.gender,
@@ -227,7 +235,13 @@ class App extends Component {
   };
 
   leaveCall = () => {
+    console.log("Left the call")
     this.setState({ callEnded: true });
+    this.socket.emit("endCall")
+
+
+
+
     this.connectionRef.current.destroy();
   };
 

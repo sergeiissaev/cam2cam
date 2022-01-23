@@ -53,9 +53,18 @@ io.on("connection", (socket) => {
 	socket.emit("me", socket.id)
 	console.log("User connected " + socket.id + " - emitting Me")
 	
+
+
+	socket.on("endCall", () => {
+		console.log( socket.id + " pressed next")
+		socket.disconnect();
+	})
+
+
 	socket.on("disconnect", () => {
 		socket.broadcast.emit("callEnded")
 		console.log("User disconnected - " + socket.id + " emitting callEnded")
+
 	})
 	
 
