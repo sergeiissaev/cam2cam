@@ -321,7 +321,7 @@ class App extends Component {
 
         <Navbar bg="primary" variant="dark">
     <Container fluid>
-    <Navbar.Brand href="#home">Cam2Cam Chat App</Navbar.Brand>
+    <Navbar.Brand href="#home">Petition to revoke Mohammad Ameli's drivers license</Navbar.Brand>
     <Nav className="me-auto">
       <Nav.Link href="#pricing">Main Room</Nav.Link>
     </Nav>
