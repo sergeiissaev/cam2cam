@@ -30,6 +30,7 @@ class App extends Component {
       receivingCall: false,
       caller: "",
       name: "",
+      firstCall: true,
       callerSignal: "",
       callerAge: "",
       callerLocation: "",
@@ -87,7 +88,7 @@ class App extends Component {
     });
 
     this.socket.on("callEnded", (id) => {
-      this.setState({ callEnded: true });
+      this.setState({ callEnded: true, firstCall: false, callAccepted: false});
       console.log("other user has disconnected");
     });
 
@@ -124,9 +125,7 @@ class App extends Component {
         callerLocation: data.location,
         callerGender: data.gender,
       });
-      this.socket.on("callEnded", (data) => {
-        console.log("Call was ended - socket")
-        });
+
       console.log(
         "Randomly chatting with a ",
         data.gender,
@@ -195,6 +194,7 @@ class App extends Component {
       console.log(
         "random call peer received stream, setting this.userVideo to stream"
       );
+      this.setState({ searching: false })
       this.userVideo.current.srcObject = stream;
     });
 
@@ -235,8 +235,10 @@ class App extends Component {
   };
 
   leaveCall = () => {
-    console.log("Left the call")
-    this.setState({ callEnded: true });
+    console.log("Left the call");
+    console.log(this.state)
+    this.setState({ callEnded: true, firstCall: false, callAccepted: false});
+ 
     this.socket.emit("endCall")
 
 
@@ -321,7 +323,7 @@ class App extends Component {
 
         <Navbar bg="primary" variant="dark">
     <Container fluid>
-    <Navbar.Brand href="#home">Petition to revoke Mohammad Ameli's drivers license</Navbar.Brand>
+    <Navbar.Brand href="#home">Chat With Strangers!</Navbar.Brand>
     <Nav className="me-auto">
       <Nav.Link href="#pricing">Main Room</Nav.Link>
     </Nav>
@@ -331,7 +333,7 @@ class App extends Component {
 
 
 
-
+{/* 
         <Container>
           <div>
             {this.state.receivingCall && !this.state.callAccepted ? (
@@ -351,7 +353,7 @@ class App extends Component {
               </div>
             ) : null}
           </div>
-        </Container>
+        </Container> */}
 
         <Container  fluid style={{backgroundColor: 'yellow', height: "89vh"}}>
           <Row style={{height: "100%"}}>
@@ -403,7 +405,7 @@ class App extends Component {
          
           <Col xs={7} style={{ backgroundColor: "grey", color: "white", height: "100%", alignContent: "center", alignItems: "center", display: "flex", justifyContent: 'center'}}>
         
-            {!this.state.searching && !this.state.callAccepted && (
+            {!this.state.searching && !this.state.callAccepted && this.state.firstCall && (
    
                 <Button
                   variant="contained"
@@ -437,6 +439,20 @@ class App extends Component {
                   </Button>
                           
        )}
+
+                     {!this.state.searching && !this.state.callAccepted && !this.state.firstCall && (
+                       
+                         
+                       <Button
+                         variant="contained"
+                         color="secondary"
+                         onClick={this.leaveCall}
+                         style={{height: '5vh', width: '20%'}}
+                       >
+                         Next
+                       </Button>
+                               
+            )}
 
             </Col>
             <Col xs={5}></Col>
